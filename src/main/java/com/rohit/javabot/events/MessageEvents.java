@@ -30,9 +30,7 @@ public class MessageEvents extends ListenerAdapter{
             while((line = br.readLine()) != null){
                 pickupLinesArr.add(line);
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        }  catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -50,56 +48,107 @@ public class MessageEvents extends ListenerAdapter{
     {
 
         String messageReceived = event.getMessage().getContentRaw();
-        String[] messageArr = messageReceived.split(" ");
-        if(!event.getAuthor().isBot() && messageArr.length > 1 && messageArr[1].equalsIgnoreCase("<@1038744752796991548>")){
+        String[] messageArr = messageReceived.trim().split(" ");
+        String[] mentions = event
+            .getMessage()
+            .getMentions()
+            .getUsers()
+            .stream()
+            .map(user -> user.getId())
+            .toArray(String[]::new);
+
+        if(!event.getAuthor().isBot() && messageArr.length > 1 && mentions[0].equalsIgnoreCase("1038744752796991548")){
+
             if(messageArr[0].equalsIgnoreCase("hello") || messageArr[0].equalsIgnoreCase("hi"))
-                sayHello(event);
+                sayHello(mentions,event);
+
             else  if(messageArr[0].equalsIgnoreCase("sex"))
-                giveSex(event);
+                giveSex(mentions,event);
+
             else if(messageArr[0].equalsIgnoreCase("flirt")){
-                flirt(event);
+                    flirt(mentions,event);
             }
+
+            else if(messageArr[0].equalsIgnoreCase("bye")){
+                sayBye(mentions,event);
+            }
+
         }
 
     }
-    public void giveSex(MessageReceivedEvent event){
-        event
-                .getChannel()
-                .sendMessage("Fuck me daddy, " + "<@" + event.getAuthor().getId() + "> 🥵")
-                .queue();
+    public void giveSex(String[] mentions,MessageReceivedEvent event){
+
+        if(mentions.length > 1){
+            event
+                    .getChannel()
+                    .sendMessage("Fuck me daddy, <@" + mentions[1] + "> 🥵")
+                    .queue();
+        }
+
+        else{
+            event
+                    .getChannel()
+                    .sendMessage("Fuck me daddy, " + "<@" + event.getAuthor().getId() + "> 🥵")
+                    .queue();
+        }
     }
 
-    public void sayHello(MessageReceivedEvent event){
-        event
-                .getChannel()
-                .sendMessage("Hi, <@" + event.getAuthor().getId() + "> 👋")
-                .queue();
+    public void sayHello(String[] mentions,MessageReceivedEvent event){
+
+        if(mentions.length > 1){
+            event
+                    .getChannel()
+                    .sendMessage("Hi, <@" + mentions[1] + "> 👋")
+                    .queue();
+        }
+
+        else{
+            event
+                    .getChannel()
+                    .sendMessage("Hi, <@" + event.getAuthor().getId() + "> 👋")
+                    .queue();
+        }
+
     }
 
-    public void flirt(MessageReceivedEvent event){
+    public void flirt(String[] mentions,MessageReceivedEvent event){
 
-        try {
-            File f1 = new File("src/main/java/com/rohit/javabot/utilities/pickuplines.txt");
-            FileReader fr = new FileReader(f1);
+        int lineNumber = (int)(Math.random()*(pickupLinesArr.size()));
 
-            BufferedReader br = new BufferedReader(fr);
-            String line;
-//            List<String> pickupLinesArr = new ArrayList<>();
-            while((line = br.readLine()) != null){
-                pickupLinesArr.add(line);
-            }
+        if(mentions.length > 1){
+            event
+                    .getChannel()
+                    .sendMessage("<@" + mentions[1] + "> " + pickupLinesArr.get(lineNumber))
+                    .queue();
+        }
 
-            int lineNumber = (int)(Math.random()*(pickupLinesArr.size()));
+        else {
+
             event
                     .getChannel()
                     .sendMessage("<@" + event.getAuthor().getId() + "> " + pickupLinesArr.get(lineNumber))
                     .queue();
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+
+    }
+
+    public void sayBye(String[] mentions,MessageReceivedEvent event){
+
+        if(mentions.length > 1){
+            event
+                    .getChannel()
+                    .sendMessage("Bye, <@" + mentions[1] + "> 👋")
+                    .queue();
+        }
+
+        else{
+            event
+                    .getChannel()
+                    .sendMessage("Bye, <@" + event.getAuthor().getId() + "> 👋")
+                    .queue();
+        }
+
     }
 
 }

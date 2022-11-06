@@ -10,10 +10,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
 @SpringBootApplication
 public class JavabotApplication implements CommandLineRunner {
 
