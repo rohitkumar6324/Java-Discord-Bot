@@ -1,5 +1,6 @@
 package com.rohit.javabot.events;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -71,6 +72,10 @@ public class MessageEvents extends ListenerAdapter{
 
             else if(messageArr[0].equalsIgnoreCase("bye")){
                 sayBye(mentions,event);
+            }
+
+            else if(messageArr[0].equalsIgnoreCase("test")){
+                sayByeTesting(mentions,event);
             }
 
         }
@@ -149,6 +154,16 @@ public class MessageEvents extends ListenerAdapter{
                     .queue();
         }
 
+    }
+
+    public void sayByeTesting(String[] mentions,MessageReceivedEvent event){
+        EmbedBuilder eb = new EmbedBuilder();
+
+        eb.setTitle("Chala Jaa",null);
+
+        eb.setImage("https://raw.githubusercontent.com/rohitkumar6324/Java-Discord-Bot/master/src/main/java/com/rohit/javabot/utilities/chala-ja.gif?token=GHSAT0AAAAAABYDKLAKFPX3NOKOQ23MIARGY3IDYGQ");
+        event.getChannel().sendMessageEmbeds(eb.build()).queue();
+//        channel.sendFiles(eb.build()).queue();
     }
 
 }
