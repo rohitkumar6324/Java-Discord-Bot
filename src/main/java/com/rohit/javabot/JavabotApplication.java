@@ -10,6 +10,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 public class JavabotApplication implements CommandLineRunner {
 
@@ -27,6 +31,7 @@ public class JavabotApplication implements CommandLineRunner {
 	public void run(String... args) throws InterruptedException {
 		context.getBean(MessageEvents.class).begin();
 	}
+
 
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication springApplication = new SpringApplication(JavabotApplication.class);
